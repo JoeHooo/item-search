@@ -1,0 +1,19 @@
+info:
+  contact: {}
+paths:
+  /admin/info:
+    get:
+      consumes:
+      - application/json
+      description: admin info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: admin info
+      tags:
+      - admin
+swagger: "2.0"
