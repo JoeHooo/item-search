@@ -1,17 +1,16 @@
-package db
+package repository
 
 import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"item-search/internal/repository"
 	"item-search/pkg/config"
 	"time"
 )
 
-func Init() {
-	sqlConf := config.Conf.MySQL
+func InitMySQL() {
+	sqlConf := config.Config.MySQL
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
 		sqlConf.Username,
@@ -37,5 +36,5 @@ func Init() {
 	sqlDb.SetMaxIdleConns(10)
 	sqlDb.SetMaxOpenConns(100)
 	sqlDb.SetConnMaxLifetime(time.Hour)
-	repository.Db = db
+	Db = db
 }

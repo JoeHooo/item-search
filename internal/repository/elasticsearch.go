@@ -1,4 +1,4 @@
-package es
+package repository
 
 import (
 	"bytes"
@@ -9,7 +9,6 @@ import (
 	"github.com/elastic/go-elasticsearch/v7/estransport"
 	log "github.com/sirupsen/logrus"
 	"io"
-	"item-search/internal/repository"
 	"item-search/pkg/config"
 	"net"
 	"net/http"
@@ -23,8 +22,8 @@ var (
 	index  string
 )
 
-func Init() {
-	esConfig := config.Conf.Elastic
+func InitElasticsearch() {
+	esConfig := config.Config.Elastic
 	index = esConfig.Index
 	address := fmt.Sprintf("%s://%s:%d", esConfig.Protocol, esConfig.Host, esConfig.Port)
 	cfg := elasticsearch.Config{
@@ -48,7 +47,7 @@ func Init() {
 	if err != nil {
 		log.Fatalf("Elasticsearch info error, %s", err)
 	}
-	repository.Es = es
+	Elasticsearch = es
 }
 
 func Search(data interface{}) {
@@ -56,12 +55,13 @@ func Search(data interface{}) {
 	if err := json.NewEncoder(&buf).Encode(data); err != nil {
 		log.Fatalf("Error encoding query: %s", err)
 	}
-	res, err := repository.Es.Search(
-		repository.Es.Search.WithContext(repository.Ctx),
-		repository.Es.Search.WithIndex(index),
-		repository.Es.Search.WithBody(&buf),
-		repository.Es.Search.WithTrackTotalHits(true),
-		repository.Es.Search.WithPretty(),
+	search := Elasticsearch.Search
+	res, err := search(
+		search.WithContext(Ctx),
+		search.WithIndex(index),
+		search.WithBody(&buf),
+		search.WithTrackTotalHits(true),
+		search.WithPretty(),
 	)
 	if err != nil {
 		log.Fatalf("Error getting response: %s", err)

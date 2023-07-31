@@ -5,14 +5,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-type Config struct {
-	Server  Server  `json:"server"`
-	Elastic Elastic `json:"elastic"`
-	Redis   Redis   `json:"redis"`
-	MySQL   MySQL   `json:"mysql"`
+type Configuration struct {
+	Server  Server        `json:"server"`
+	Elastic Elasticsearch `json:"elastic"`
+	Redis   Redis         `json:"redis"`
+	MySQL   MySQL         `json:"mysql"`
 }
 
-type Elastic struct {
+type Elasticsearch struct {
 	Host     string `json:"host"`
 	Protocol string `json:"protocol"`
 	Port     int32  `json:"port"`
@@ -45,7 +45,7 @@ type MySQL struct {
 	Database string `json:"database"`
 }
 
-var Conf Config
+var Config Configuration
 
 func ReadConfig() {
 	viper.SetConfigName("config")
@@ -54,7 +54,7 @@ func ReadConfig() {
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("Read config error, message: %s", err)
 	}
-	if err := viper.Unmarshal(&Conf); err != nil {
+	if err := viper.Unmarshal(&Config); err != nil {
 		log.Fatalf("Read config unmarshal error, message: %s", err)
 	}
 }

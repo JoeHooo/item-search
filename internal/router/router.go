@@ -18,7 +18,7 @@ func Run() {
 	router := gin.Default()
 	router.Use(middleware2.Cors(), middleware2.Logger())
 
-	serverConf := config.Conf.Server
+	serverConf := config.Config.Server
 	base := router.Group(serverConf.ContextPath)
 	admin := base.Group("/admin")
 	{
