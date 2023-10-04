@@ -36,5 +36,5 @@ func InitMySQL() {
 	sqlDb.SetMaxIdleConns(10)
 	sqlDb.SetMaxOpenConns(100)
 	sqlDb.SetConnMaxLifetime(time.Hour)
-	Db = db
+	MySQL = db
 }
